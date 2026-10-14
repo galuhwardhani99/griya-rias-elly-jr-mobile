@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">project_griyarias</string>
+    <string name="app_name">Project Griya Rias</string> <!-- Ini bawaan -->
+
+    <!-- Tambahkan 2 baris ini -->
+    <string name="open_nav">Buka Menu</string>
+    <string name="close_nav">Tutup Menu</string>
 </resources>

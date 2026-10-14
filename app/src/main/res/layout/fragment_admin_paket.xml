@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF8F5">
+
+    <!-- RecyclerView Daftar Paket (jarak atas dinaikkan agar tidak tertutup toolbar) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPaketAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="88dp"
+        android:paddingBottom="80dp"
+        android:clipToPadding="false" />
+
+    <!-- Indikator Loading -->
+    <ProgressBar
+        android:id="@+id/progressBarPaket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <!-- Tombol Tambah Paket (+) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddPaket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="24dp"
+        android:backgroundTint="#8D6E63"
+        android:contentDescription="Tambah Paket"
+        android:src="@android:drawable/ic_input_add"
+        app:tint="#FFFFFF" />
+
+</RelativeLayout>

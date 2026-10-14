@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <!-- 1. Beranda diganti menjadi Lihat Jadwal -->
+        <item
+            android:id="@+id/nav_jadwal"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="Lihat Jadwal" />
+
+        <!-- 2. Katalog Paket Layanan -->
+        <item
+            android:id="@+id/nav_katalog"
+            android:icon="@android:drawable/ic_menu_gallery"
+            android:title="Katalog Paket" />
+
+        <item
+            android:id="@+id/nav_reservasi"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="Reservasi Saya" />
+
+        <!-- 3. Profil Pengguna -->
+        <item
+            android:id="@+id/nav_profil"
+            android:icon="@android:drawable/ic_menu_myplaces"
+            android:title="Profil" />
+    </group>
+
+    <item android:title="Lainnya">
+        <menu>
+            <!-- 4. Pengaturan Akun diganti nama jadi Info Aplikasi, tepat di atas Logout -->
+            <item
+                android:id="@+id/nav_info_aplikasi"
+                android:icon="@android:drawable/ic_menu_info_details"
+                android:title="Info Aplikasi" />
+
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="Keluar (Logout)" />
+        </menu>
+    </item>
+
+</menu>

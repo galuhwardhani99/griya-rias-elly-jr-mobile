@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF8F5"
+    android:orientation="vertical">
+
+    <!-- Toolbar Atas -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarInfo"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#3E2723"
+        app:navigationIcon="@android:drawable/ic_menu_revert"
+        app:title="Info Aplikasi"
+        app:titleTextColor="#FFFFFF" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Logo Griya Wedding -->
+        <ImageView
+            android:id="@+id/ivLogoInfo"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:contentDescription="Logo Griya Wedding"
+            android:src="@drawable/ic_launcher_foreground" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Griya Rias ELLY JR"
+            android:textColor="#3E2723"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Versi 1.0.0"
+            android:textColor="#757575"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="#EFEBE9"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:text="(Tekan lama logo di atas untuk menu pilihan)"
+            android:textColor="#5D4037"
+            android:textSize="12sp"
+            android:textStyle="italic" />
+
+    </LinearLayout>
+</LinearLayout>

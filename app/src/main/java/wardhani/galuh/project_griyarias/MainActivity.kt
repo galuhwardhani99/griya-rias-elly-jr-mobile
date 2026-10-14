@@ -1,20 +1,19 @@
 package wardhani.galuh.project_griyarias
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import wardhani.galuh.project_griyarias.admin.AdminDashboardActivity
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        // Karena semua fitur sudah dipindah, MainActivity hanya bertugas
+        // mengarahkan (melempar) pengguna langsung ke halaman Admin Dashboard.
+        val intent = Intent(this, AdminDashboardActivity::class.java)
+        startActivity(intent)
+        finish() // Menutup MainActivity agar pengguna tidak kembali ke layar kosong saat menekan tombol Back
     }
 }

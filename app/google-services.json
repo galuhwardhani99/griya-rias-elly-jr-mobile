@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "171926300102",
+    "project_id": "pml-ptt",
+    "storage_bucket": "pml-ptt.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171926300102:android:eba091bbb79a8fca4c7ec7",
+        "android_client_info": {
+          "package_name": "wardhani.galuh.project_griyarias"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7py6fggdjEJl9kRKpV1kmqVjoWAge6eQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

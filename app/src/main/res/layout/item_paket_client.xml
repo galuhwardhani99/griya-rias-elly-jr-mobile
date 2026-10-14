@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Kategori Paket -->
+        <TextView
+            android:id="@+id/tvKategoriPaket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#EFEBE9"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="PENGANTIN"
+            android:textColor="#3E2723"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- Nama Paket -->
+        <TextView
+            android:id="@+id/tvNamaPaket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Paket Platinum"
+            android:textColor="#3E2723"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Harga Paket -->
+        <TextView
+            android:id="@+id/tvHargaPaket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Rp 66.000.000"
+            android:textColor="#C5A059"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Deskripsi Paket -->
+        <TextView
+            android:id="@+id/tvDeskripsiPaket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="2dp"
+            android:text="Deskripsi paket..."
+            android:textColor="#424242"
+            android:textSize="13sp" />
+
+        <!-- Tombol Reservasi / WA -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPesanPaket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#3E2723"
+            android:text="Tanyakan / Reservasi Paket Ini"
+            android:textColor="#FFFFFF"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
