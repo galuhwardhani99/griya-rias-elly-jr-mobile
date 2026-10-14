@@ -6,14 +6,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-
-    // Emulator Android  -> http://10.0.2.2:8000/api/
-    // HP asli (satu WiFi) -> http://IP_LAPTOP_KAMU:8000/api/  (contoh 192.168.1.10)
-    private const val BASE_URL = "http://192.168.40.108:8080/api/"
+    private const val BASE_URL = "http://192.168.1.8:8000/api/"
 
     private val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
-            // wajib supaya Laravel membalas error validasi dalam bentuk JSON
             val request = chain.request().newBuilder()
                 .addHeader("Accept", "application/json")
                 .build()

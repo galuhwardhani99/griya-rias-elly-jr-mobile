@@ -15,6 +15,33 @@
         app:title="Katalog Paket Layanan"
         app:titleTextColor="#FFFFFF" />
 
+    <!-- TAMBAHAN: Box Search menggunakan AutoCompleteTextView -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSearchKatalog"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:hint="Cari nama atau kategori paket..."
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusTopStart="8dp"
+        app:endIconMode="clear_text">
+
+        <AutoCompleteTextView
+            android:id="@+id/actvSearchKatalog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:dropDownHeight="200dp"
+            android:inputType="text"
+            android:padding="12dp"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

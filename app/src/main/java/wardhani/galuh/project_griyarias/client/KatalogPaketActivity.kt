@@ -3,7 +3,10 @@ package wardhani.galuh.project_griyarias.client
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +21,9 @@ class KatalogPaketActivity : AppCompatActivity() {
     private lateinit var binding: ActivityKatalogPaketBinding
     private lateinit var adapter: PaketClientAdapter
 
+    // TAMBAHAN: List penampung data utama dari API
+    private var listPaketFull: List<Paket> = emptyList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityKatalogPaketBinding.inflate(layoutInflater)
@@ -27,6 +33,7 @@ class KatalogPaketActivity : AppCompatActivity() {
         binding.toolbarKatalog.setNavigationOnClickListener { finish() }
 
         setupRecyclerView()
+        setupSearchAutoComplete() // TAMBAHAN: Inisialisasi listener pencarian
         loadPaketData()
     }
 
@@ -38,20 +45,72 @@ class KatalogPaketActivity : AppCompatActivity() {
         binding.rvKatalogPaket.adapter = adapter
     }
 
+    // TAMBAHAN: Listener untuk menyaring list saat user mengetik atau memilih dari AutoComplete
+    private fun setupSearchAutoComplete() {
+        binding.actvSearchKatalog.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filterKatalog(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        binding.actvSearchKatalog.setOnItemClickListener { parent, _, position, _ ->
+            val selectedItem = parent.getItemAtPosition(position) as String
+            filterKatalog(selectedItem)
+        }
+    }
+
+    // TAMBAHAN: Fungsi penyaring data berdasarkan keyword
+    private fun filterKatalog(query: String) {
+        val filteredList = if (query.trim().isEmpty()) {
+            listPaketFull
+        } else {
+            listPaketFull.filter { paket ->
+                paket.namaPaket.contains(query, ignoreCase = true) ||
+                        paket.kategori.contains(query, ignoreCase = true)
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            binding.tvEmptyKatalog.visibility = View.VISIBLE
+            binding.tvEmptyKatalog.text = "Paket \"$query\" tidak ditemukan"
+        } else {
+            binding.tvEmptyKatalog.visibility = View.GONE
+        }
+
+        adapter.updateData(filteredList)
+    }
+
     private fun loadPaketData() {
         binding.pbKatalog.visibility = View.VISIBLE
 
         lifecycleScope.launch {
             try {
-                // Menggunakan RetrofitClient.api sesuai variabel di file RetrofitClient.kt
                 val response = RetrofitClient.api.getPakets()
                 binding.pbKatalog.visibility = View.GONE
 
                 if (response.success && response.data.isNotEmpty()) {
                     binding.tvEmptyKatalog.visibility = View.GONE
-                    adapter.updateData(response.data)
+
+                    // TAMBAHAN: Simpan ke list utama
+                    listPaketFull = response.data
+                    adapter.updateData(listPaketFull)
+
+                    // TAMBAHAN: Buat saran (suggestions) untuk AutoCompleteTextView dari nama & kategori paket
+                    val searchSuggestions = listPaketFull.map { it.namaPaket }.distinct()
+                    val autoCompleteAdapter = ArrayAdapter(
+                        this@KatalogPaketActivity,
+                        android.R.layout.simple_dropdown_item_1line,
+                        searchSuggestions
+                    )
+                    binding.actvSearchKatalog.setAdapter(autoCompleteAdapter)
+
                 } else {
                     binding.tvEmptyKatalog.visibility = View.VISIBLE
+                    binding.tvEmptyKatalog.text = "Belum ada paket layanan tersedia"
                     adapter.updateData(emptyList())
                 }
             } catch (e: Exception) {

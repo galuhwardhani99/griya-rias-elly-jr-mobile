@@ -7,4 +7,7 @@
     <color name="gray_text">#6D6D6D</color>
     <color name="status_aktif">#2E7D32</color>
     <color name="status_nonaktif">#9E9E9E</color>
+
+    <color name="text_heading">#3E2723</color>
+    <color name="placeholder_bg">#E8E8E8</color>
 </resources>

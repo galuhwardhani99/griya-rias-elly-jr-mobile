@@ -38,11 +38,13 @@ import wardhani.galuh.project_griyarias.data.GaleriModel
 import wardhani.galuh.project_griyarias.data.SupabaseClient
 import wardhani.galuh.project_griyarias.service.MyFirebaseMessagingService
 import wardhani.galuh.project_griyarias.service.PromoIntentHelper
+import wardhani.galuh.project_griyarias.util.ThemeHelper
 
 class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navView: NavigationView
     private lateinit var rvGaleri: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var galeriAdapter: GaleriAdapter
@@ -95,7 +97,7 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
         setSupportActionBar(toolbar)
 
         drawerLayout = findViewById(R.id.drawer_layout)
-        val navView = findViewById<NavigationView>(R.id.nav_view)
+        navView = findViewById(R.id.nav_view)
 
         rvGaleri = findViewById(R.id.rvGaleriClient)
         progressBar = findViewById(R.id.progressBarClient)
@@ -105,6 +107,11 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
             findViewById<View>(btnLihatKatalogId)?.setOnClickListener {
                 startActivity(Intent(this, KatalogPaketActivity::class.java))
             }
+        }
+
+        // Tombol hero di layout bernama btnKatalogHero
+        findViewById<View>(R.id.btnKatalogHero)?.setOnClickListener {
+            startActivity(Intent(this, KatalogPaketActivity::class.java))
         }
 
         setupRecyclerView()
@@ -118,6 +125,7 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+        updateThemeMenuItem()
 
         val headerView = navView.getHeaderView(0)
         val tvUserEmail = headerView.findViewById<TextView>(R.id.tvUserEmail)
@@ -224,11 +232,22 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
         }
     }
 
+    // Ubah judul menu sesuai mode yang sedang aktif
+    private fun updateThemeMenuItem() {
+        val item = navView.menu.findItem(R.id.nav_mode_tema) ?: return
+        item.title = if (ThemeHelper.isDarkMode(this)) "Mode Terang" else "Mode Gelap"
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_jadwal -> startActivity(Intent(this, LihatJadwalActivity::class.java))
             R.id.nav_katalog -> startActivity(Intent(this, KatalogPaketActivity::class.java))
             R.id.nav_info_aplikasi -> startActivity(Intent(this, InfoAplikasiActivity::class.java))
+            R.id.nav_mode_tema -> {
+                drawerLayout.closeDrawer(GravityCompat.START)
+                ThemeHelper.toggle(this) // activity otomatis di-recreate
+                return true
+            }
             R.id.nav_logout -> logoutClient()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
