@@ -96,8 +96,12 @@ class PembayaranActivity : AppCompatActivity() {
         }
 
         btnKameraBukti.setOnClickListener {
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            cameraLauncher.launch(cameraIntent)
+            try {
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                cameraLauncher.launch(cameraIntent)
+            } catch (e: Exception) {
+                Toast.makeText(this, "Aplikasi kamera tidak ditemukan di perangkat ini", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnKirimBukti.setOnClickListener {

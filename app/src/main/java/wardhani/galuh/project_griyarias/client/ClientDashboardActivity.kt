@@ -239,7 +239,11 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
             R.id.nav_reservasi -> startActivity(Intent(this, RiwayatReservasiActivity::class.java))
 
             // MEMBUKA HALAMAN PEMBAYARAN QRIS
-            R.id.nav_scan_qris -> startActivity(Intent(this, PembayaranActivity::class.java))
+            R.id.nav_scan_qris -> {
+                val intent = Intent(this, PembayaranActivity::class.java)
+                intent.putExtra("ID_RESERVASI", 0L)
+                startActivity(intent)
+            }
 
             R.id.nav_info_aplikasi -> startActivity(Intent(this, InfoAplikasiActivity::class.java))
             R.id.nav_mode_tema -> {

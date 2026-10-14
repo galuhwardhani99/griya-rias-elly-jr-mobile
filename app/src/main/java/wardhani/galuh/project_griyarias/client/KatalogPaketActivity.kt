@@ -21,7 +21,6 @@ class KatalogPaketActivity : AppCompatActivity() {
     private lateinit var binding: ActivityKatalogPaketBinding
     private lateinit var adapter: PaketClientAdapter
 
-    // TAMBAHAN: List penampung data utama dari API
     private var listPaketFull: List<Paket> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,12 +32,11 @@ class KatalogPaketActivity : AppCompatActivity() {
         binding.toolbarKatalog.setNavigationOnClickListener { finish() }
 
         setupRecyclerView()
-        setupSearchAutoComplete() // TAMBAHAN: Inisialisasi listener pencarian
+        setupSearchAutoComplete()
         loadPaketData()
     }
 
     private fun setupRecyclerView() {
-        // Klik item paket akan membuka FormReservasiActivity
         adapter = PaketClientAdapter(emptyList()) { paket ->
             panggilFormReservasi(paket)
         }
@@ -46,7 +44,6 @@ class KatalogPaketActivity : AppCompatActivity() {
         binding.rvKatalogPaket.adapter = adapter
     }
 
-    // TAMBAHAN: Listener untuk menyaring list saat user mengetik atau memilih dari AutoComplete
     private fun setupSearchAutoComplete() {
         binding.actvSearchKatalog.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -64,7 +61,6 @@ class KatalogPaketActivity : AppCompatActivity() {
         }
     }
 
-    // TAMBAHAN: Fungsi penyaring data berdasarkan keyword
     private fun filterKatalog(query: String) {
         val filteredList = if (query.trim().isEmpty()) {
             listPaketFull
@@ -96,11 +92,9 @@ class KatalogPaketActivity : AppCompatActivity() {
                 if (response.success && response.data.isNotEmpty()) {
                     binding.tvEmptyKatalog.visibility = View.GONE
 
-                    // TAMBAHAN: Simpan ke list utama
                     listPaketFull = response.data
                     adapter.updateData(listPaketFull)
 
-                    // TAMBAHAN: Buat saran (suggestions) untuk AutoCompleteTextView dari nama & kategori paket
                     val searchSuggestions = listPaketFull.map { it.namaPaket }.distinct()
                     val autoCompleteAdapter = ArrayAdapter(
                         this@KatalogPaketActivity,
