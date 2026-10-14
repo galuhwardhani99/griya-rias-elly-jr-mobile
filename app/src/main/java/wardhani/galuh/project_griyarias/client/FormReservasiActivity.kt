@@ -2,6 +2,7 @@ package wardhani.galuh.project_griyarias.client
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -10,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import wardhani.galuh.project_griyarias.data.Reservasi
 import wardhani.galuh.project_griyarias.data.RetrofitClient
 import wardhani.galuh.project_griyarias.databinding.ActivityFormReservasiBinding
 import java.util.Calendar
-import android.content.Intent
 
 class FormReservasiActivity : AppCompatActivity() {
 
@@ -70,7 +71,7 @@ class FormReservasiActivity : AppCompatActivity() {
             val timePicker = TimePickerDialog(
                 this,
                 { _, selectedHour, selectedMinute ->
-                    val formattedTime = String.format("%02d:%02d WIB", selectedHour, selectedMinute)
+                    val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
                     binding.etJamMulai.setText(formattedTime)
                 },
                 hour,
@@ -118,7 +119,7 @@ class FormReservasiActivity : AppCompatActivity() {
             return
         }
 
-        val catatanLengkap = "Sesi: $sesiTerpilih | Jam Acara Dimulai: $jamMulai | Catatan: $catatanInput"
+        val catatanLengkap = "Paket: $namaPaket | Sesi: $sesiTerpilih | Jam Acara: $jamMulai WIB | Catatan: $catatanInput"
 
         binding.pbReservasi.visibility = View.VISIBLE
         binding.btnKirimReservasi.isEnabled = false
@@ -136,10 +137,8 @@ class FormReservasiActivity : AppCompatActivity() {
                 val response = RetrofitClient.api.createReservasi(request)
 
                 if (response.success && response.data != null) {
-                    // 1. Ambil ID Reservasi asli hasil generate dari database MySQL / Laravel
                     val newIdReservasi = response.data.idReservasi ?: 0L
 
-                    // 2. Simpan data ke Firestore (sertakan id_reservasi dari MySQL)
                     val firestoreData = hashMapOf(
                         "id_reservasi" to newIdReservasi,
                         "nama_client" to nama,
@@ -159,7 +158,6 @@ class FormReservasiActivity : AppCompatActivity() {
                             binding.btnKirimReservasi.isEnabled = true
                             Toast.makeText(this@FormReservasiActivity, "Reservasi Berhasil!", Toast.LENGTH_SHORT).show()
 
-                            // 3. Pindah langsung ke PembayaranActivity membawa ID_RESERVASI
                             val intent = Intent(this@FormReservasiActivity, PembayaranActivity::class.java)
                             intent.putExtra("ID_RESERVASI", newIdReservasi)
                             startActivity(intent)
@@ -175,6 +173,11 @@ class FormReservasiActivity : AppCompatActivity() {
                     binding.btnKirimReservasi.isEnabled = true
                     Toast.makeText(this@FormReservasiActivity, response.message ?: "Gagal membuat reservasi", Toast.LENGTH_SHORT).show()
                 }
+            } catch (e: HttpException) {
+                binding.pbReservasi.visibility = View.GONE
+                binding.btnKirimReservasi.isEnabled = true
+                val errorBody = e.response()?.errorBody()?.string()
+                Toast.makeText(this@FormReservasiActivity, "Validasi Backend Gagal: $errorBody", Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
                 binding.pbReservasi.visibility = View.GONE
                 binding.btnKirimReservasi.isEnabled = true
