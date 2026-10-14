@@ -79,9 +79,19 @@
             android:name=".client.RiwayatReservasiActivity"
             android:exported="false" />
 
+        <!-- Detail Promo Activity: Ditambahkan Intent Filter Deep Link -->
         <activity
             android:name=".client.DetailPromoActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="griyarias"
+                    android:host="promo" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".client.InfoAplikasiActivity"
@@ -90,6 +100,7 @@
         <activity
             android:name=".client.KatalogPaketActivity"
             android:exported="false" />
+
         <activity
             android:name=".client.PembayaranActivity"
             android:exported="false" />

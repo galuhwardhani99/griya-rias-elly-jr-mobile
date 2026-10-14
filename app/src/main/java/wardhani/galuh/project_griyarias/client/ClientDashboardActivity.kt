@@ -73,6 +73,7 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
 
         auth = FirebaseAuth.getInstance()
 
+        // 1. Penanganan Notifikasi & In-App Messaging Promo
         if (savedInstanceState == null) {
             PromoIntentHelper.handleNotificationIntent(this, intent)
         }
@@ -99,6 +100,7 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
         rvGaleri = findViewById(R.id.rvGaleriClient)
         progressBar = findViewById(R.id.progressBarClient)
 
+        // Tombol Lihat Katalog Paket Utama
         val btnLihatKatalogId = resources.getIdentifier("btnLihatKatalog", "id", packageName)
         if (btnLihatKatalogId != 0) {
             findViewById<View>(btnLihatKatalogId)?.setOnClickListener {
@@ -106,8 +108,9 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
             }
         }
 
-        // Tombol hero di layout bernama btnKatalogHero
+        // 2. Tombol Hero Banner diarahkan ke Katalog / Promo sesuai kebutuhan
         findViewById<View>(R.id.btnKatalogHero)?.setOnClickListener {
+            // Jika diklik membuka Katalog Paket
             startActivity(Intent(this, KatalogPaketActivity::class.java))
         }
 
@@ -156,6 +159,7 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        // Menangani klik notifikasi promo saat aplikasi sedang berjalan di background
         PromoIntentHelper.handleNotificationIntent(this, intent)
     }
 
@@ -226,7 +230,6 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
         }
     }
 
-    // Ubah judul menu sesuai mode yang sedang aktif
     private fun updateThemeMenuItem() {
         val item = navView.menu.findItem(R.id.nav_mode_tema) ?: return
         item.title = if (ThemeHelper.isDarkMode(this)) "Mode Terang" else "Mode Gelap"
@@ -238,7 +241,6 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
             R.id.nav_katalog -> startActivity(Intent(this, KatalogPaketActivity::class.java))
             R.id.nav_reservasi -> startActivity(Intent(this, RiwayatReservasiActivity::class.java))
 
-            // MEMBUKA HALAMAN PEMBAYARAN QRIS
             R.id.nav_scan_qris -> {
                 val intent = Intent(this, PembayaranActivity::class.java)
                 intent.putExtra("ID_RESERVASI", 0L)
@@ -248,7 +250,7 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
             R.id.nav_info_aplikasi -> startActivity(Intent(this, InfoAplikasiActivity::class.java))
             R.id.nav_mode_tema -> {
                 drawerLayout.closeDrawer(GravityCompat.START)
-                ThemeHelper.toggle(this) // activity otomatis di-recreate
+                ThemeHelper.toggle(this)
                 return true
             }
             R.id.nav_logout -> logoutClient()

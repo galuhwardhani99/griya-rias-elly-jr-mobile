@@ -6,21 +6,37 @@ import wardhani.galuh.project_griyarias.client.DetailPromoActivity
 
 object PromoIntentHelper {
 
-    /** Return true kalau intent berasal dari klik notifikasi FCM dan sudah diteruskan. */
+    /** Return true kalau intent berasal dari klik notifikasi FCM / Promo dan sudah diteruskan. */
     fun handleNotificationIntent(activity: Activity, intent: Intent?): Boolean {
         val extras = intent?.extras ?: return false
-        if (!extras.containsKey("google.message_id")) return false
 
-        val detail = Intent(activity, DetailPromoActivity::class.java).apply {
-            putExtra("title", extras.getString("title") ?: "Promo Griya Rias")
-            putExtra("body", extras.getString("body") ?: extras.getString("promo") ?: "")
-            putExtra("promo", extras.getString("promo") ?: extras.getString("body") ?: "")
-            putExtra("imageUrl", extras.getString("imageUrl") ?: "")
-            putExtra("promoUntil", extras.getString("promoUntil") ?: "")
+        // Cek apakah ada indikasi notifikasi FCM atau payload promo
+        val isFcmNotification = extras.containsKey("google.message_id")
+        val isPromoPayload = extras.containsKey("promo") || extras.containsKey("is_promo") || extras.containsKey("title")
+
+        if (!isFcmNotification && !isPromoPayload) return false
+
+        // Ambil data dengan penanganan fallback key yang lebih fleksibel
+        val title = extras.getString("title") ?: "Promo Spesial Griya Rias"
+        val body = extras.getString("body") ?: extras.getString("promo") ?: "Klaim promo menarik ini sekarang!"
+        val promoText = extras.getString("promo") ?: extras.getString("body") ?: ""
+        val imageUrl = extras.getString("imageUrl") ?: extras.getString("image") ?: ""
+        val promoUntil = extras.getString("promoUntil") ?: extras.getString("valid_until") ?: ""
+
+        val detailIntent = Intent(activity, DetailPromoActivity::class.java).apply {
+            putExtra("title", title)
+            putExtra("body", body)
+            putExtra("promo", promoText)
+            putExtra("imageUrl", imageUrl)
+            putExtra("promoUntil", promoUntil)
         }
-        // Hapus tanda FCM supaya tidak terproses dua kali
+
+        // Hapus tanda supaya tidak terproses berulang kali saat orientation change
         intent.removeExtra("google.message_id")
-        activity.startActivity(detail)
+        intent.removeExtra("promo")
+        intent.removeExtra("is_promo")
+
+        activity.startActivity(detailIntent)
         return true
     }
 }
