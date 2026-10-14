@@ -50,7 +50,6 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
     private lateinit var galeriAdapter: GaleriAdapter
 
     companion object {
-        // Nama event ini harus sama persis dengan trigger di Firebase Console
         private const val FIAM_EVENT = "client_dashboard_open"
     }
 
@@ -74,7 +73,6 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
 
         auth = FirebaseAuth.getInstance()
 
-        // Kalau dibuka dari klik notifikasi (app background), teruskan ke detail promo
         if (savedInstanceState == null) {
             PromoIntentHelper.handleNotificationIntent(this, intent)
         }
@@ -82,7 +80,6 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
         askNotificationPermission()
         subscribeToFirebaseTopic()
 
-        // Ambil Installation ID untuk "Test on device" (FIAM)
         FirebaseInstallations.getInstance().id.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d("FIAM_ID", "INSTALLATION_ID: ${task.result}")
@@ -146,7 +143,6 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
 
     override fun onResume() {
         super.onResume()
-        // Dashboard client tampil: buka blokir FIAM lalu picu event
         val fiam = FirebaseInAppMessaging.getInstance()
         fiam.setMessagesSuppressed(false)
         fiam.triggerEvent(FIAM_EVENT)
@@ -154,7 +150,6 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
 
     override fun onPause() {
         super.onPause()
-        // Keluar dari dashboard: tekan lagi supaya tidak muncul di halaman lain
         FirebaseInAppMessaging.getInstance().setMessagesSuppressed(true)
     }
 
@@ -178,7 +173,6 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
     private fun subscribeToFirebaseTopic() {
         val messaging = FirebaseMessaging.getInstance()
 
-        // Berhenti dari topik lama supaya tidak bentrok dengan aplikasi sebelumnya
         messaging.unsubscribeFromTopic(MyFirebaseMessagingService.OLD_TOPIC)
 
         messaging.subscribeToTopic(MyFirebaseMessagingService.TOPIC)
@@ -242,6 +236,11 @@ class ClientDashboardActivity : AppCompatActivity(), NavigationView.OnNavigation
         when (item.itemId) {
             R.id.nav_jadwal -> startActivity(Intent(this, LihatJadwalActivity::class.java))
             R.id.nav_katalog -> startActivity(Intent(this, KatalogPaketActivity::class.java))
+            R.id.nav_reservasi -> startActivity(Intent(this, RiwayatReservasiActivity::class.java))
+
+            // MEMBUKA HALAMAN PEMBAYARAN QRIS
+            R.id.nav_scan_qris -> startActivity(Intent(this, PembayaranActivity::class.java))
+
             R.id.nav_info_aplikasi -> startActivity(Intent(this, InfoAplikasiActivity::class.java))
             R.id.nav_mode_tema -> {
                 drawerLayout.closeDrawer(GravityCompat.START)

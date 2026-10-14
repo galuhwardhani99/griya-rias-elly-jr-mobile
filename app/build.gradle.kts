@@ -38,6 +38,9 @@ android {
 }
 
 dependencies {
+    // Akses Kamera
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
     // Library Glide untuk memuat gambar promo dari URL
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
@@ -72,6 +75,11 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.activity:activity-ktx:1.10.1")
     implementation("org.osmdroid:osmdroid-android:6.1.18")
+
+    // Pustaka volley untuk fitur zoom in dan out di galeri
+    implementation("com.android.volley:volley:1.2.1")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.chrisbanes:PhotoView:2.3.0")
 
     // AndroidX & Material Design
     implementation(libs.androidx.core.ktx)

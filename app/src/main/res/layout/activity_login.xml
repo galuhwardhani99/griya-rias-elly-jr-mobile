@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cream"
@@ -23,25 +24,41 @@
         android:textColor="@color/gray_text"
         android:textSize="14sp" />
 
-    <EditText
-        android:id="@+id/etEmailLogin"
+    <!-- Input Email -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/brown_dark"
-        android:textColorHint="@color/gray_text" />
+        app:hintTextColor="@color/gray_text">
 
-    <EditText
-        android:id="@+id/etPassLogin"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmailLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/brown_dark" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Input Password -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:hint="Password"
-        android:inputType="textPassword"
-        android:textColor="@color/brown_dark"
-        android:textColorHint="@color/gray_text" />
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/gray_text"
+        app:hintTextColor="@color/gray_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textColor="@color/brown_dark" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnLogin"
@@ -53,11 +70,13 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold" />
 
+    <!-- Tambahkan android:id="@+id/tvToRegister" di sini -->
     <TextView
         android:id="@+id/tvToRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:padding="8dp"
         android:text="Belum punya akun? Daftar sekarang"
         android:textColor="@color/gold_dark"
         android:textSize="14sp"

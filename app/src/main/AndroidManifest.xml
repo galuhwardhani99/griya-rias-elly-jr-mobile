@@ -5,6 +5,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:name=".MyApp"
@@ -37,7 +39,7 @@
             </intent-filter>
         </service>
 
-        <!-- Auth Activities -->
+        <!-- Launcher / Auth Activities -->
         <activity
             android:name=".auth.LoginActivity"
             android:exported="true">
@@ -46,17 +48,51 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".auth.RegisterActivity" android:exported="false" />
 
-        <!-- Admin Activity -->
-        <activity android:name=".admin.AdminDashboardActivity" android:exported="false" />
+        <activity
+            android:name=".auth.RegisterActivity"
+            android:exported="false" />
+
+        <!-- Admin Activities -->
+        <activity
+            android:name=".admin.AdminDashboardActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".admin.FirestoreTestActivity"
+            android:exported="false" />
 
         <!-- Client Activities -->
-        <activity android:name=".client.ClientDashboardActivity" android:exported="false" />
-        <activity android:name=".client.DetailPromoActivity" android:exported="false" />
-        <activity android:name=".client.InfoAplikasiActivity" android:exported="false" />
-        <activity android:name=".client.KatalogPaketActivity" android:exported="false" />
-        <activity android:name=".client.LihatJadwalActivity" android:exported="false" />
+        <activity
+            android:name=".client.ClientDashboardActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".client.FormReservasiActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".client.LihatJadwalActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".client.RiwayatReservasiActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".client.DetailPromoActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".client.InfoAplikasiActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".client.KatalogPaketActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.PembayaranActivity"
+            android:exported="false" />
 
     </application>
 

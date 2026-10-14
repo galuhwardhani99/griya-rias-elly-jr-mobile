@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -80,12 +81,36 @@ class AdminPaketFragment : Fragment() {
 
     private fun showFormDialog(paket: Paket?) {
         val form = DialogFormPaketBinding.inflate(layoutInflater)
+
+        // 1. Array opsi Kategori Paket
+        val listKategori = arrayOf(
+            "Pilih Kategori",
+            "Rias Pengantin",
+            "Rias Wisuda",
+            "Rias Prewedding",
+            "Sewa Busana",
+            "Dekorasi & Makeup"
+        )
+
+        // 2. Buat Adapter untuk Spinner
+        val spinnerAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            listKategori
+        )
+        form.spinnerKategori.adapter = spinnerAdapter
+
+        // 3. Jika mode Edit: Set opsi Spinner sesuai kategori paket yang di-edit
         paket?.let {
             form.etNamaPaket.setText(it.namaPaket)
-            form.etKategori.setText(it.kategori)
             form.etHarga.setText(it.harga.toString())
             form.etDeskripsi.setText(it.deskripsi)
             if (it.status == "Nonaktif") form.rbNonaktif.isChecked = true else form.rbAktif.isChecked = true
+
+            val indexKategori = listKategori.indexOf(it.kategori)
+            if (indexKategori >= 0) {
+                form.spinnerKategori.setSelection(indexKategori)
+            }
         }
 
         val dialog: AlertDialog = MaterialAlertDialogBuilder(requireContext())
@@ -98,14 +123,17 @@ class AdminPaketFragment : Fragment() {
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val nama = form.etNamaPaket.text.toString().trim()
-                val kategori = form.etKategori.text.toString().trim()
+                val kategori = form.spinnerKategori.selectedItem.toString()
                 val harga = form.etHarga.text.toString().trim().toLongOrNull()
                 val deskripsi = form.etDeskripsi.text.toString().trim()
                 val status = if (form.rbNonaktif.isChecked) "Nonaktif" else "Aktif"
                 var valid = true
 
                 if (nama.isEmpty()) { form.tilNamaPaket.error = "Wajib diisi"; valid = false } else form.tilNamaPaket.error = null
-                if (kategori.isEmpty()) { form.tilKategori.error = "Wajib diisi"; valid = false } else form.tilKategori.error = null
+                if (kategori == "Pilih Kategori") {
+                    Toast.makeText(requireContext(), "Harap pilih kategori paket!", Toast.LENGTH_SHORT).show()
+                    valid = false
+                }
                 if (harga == null) { form.tilHarga.error = "Wajib diisi"; valid = false } else form.tilHarga.error = null
                 if (!valid) return@setOnClickListener
 

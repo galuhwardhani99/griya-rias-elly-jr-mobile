@@ -38,8 +38,9 @@ class KatalogPaketActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
+        // Klik item paket akan membuka FormReservasiActivity
         adapter = PaketClientAdapter(emptyList()) { paket ->
-            hubungiAdminWA(paket)
+            panggilFormReservasi(paket)
         }
         binding.rvKatalogPaket.layoutManager = LinearLayoutManager(this)
         binding.rvKatalogPaket.adapter = adapter
@@ -122,6 +123,15 @@ class KatalogPaketActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    private fun panggilFormReservasi(paket: Paket) {
+        val intent = Intent(this, FormReservasiActivity::class.java).apply {
+            putExtra("EXTRA_PAKET_ID", paket.id ?: -1L)
+            putExtra("EXTRA_NAMA_PAKET", paket.namaPaket)
+            putExtra("EXTRA_KATEGORI_PAKET", paket.kategori)
+        }
+        startActivity(intent)
     }
 
     private fun hubungiAdminWA(paket: Paket) {

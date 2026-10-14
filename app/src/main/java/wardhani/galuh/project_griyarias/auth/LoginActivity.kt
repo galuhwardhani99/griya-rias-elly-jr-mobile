@@ -53,35 +53,42 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser
+                        val userId = user?.uid
 
-                        if (user != null) {
-                            // Cek apakah yang login adalah Admin (Abaikan verifikasi email untuk admin)
-                            if (email.equals("admin@griyaelly.com", ignoreCase = true)) {
-                                Toast.makeText(this, "Login Admin Berhasil", Toast.LENGTH_SHORT).show()
-                                startActivity(Intent(this, AdminDashboardActivity::class.java))
-                                finish()
-                                return@addOnCompleteListener
-                            }
+                        if (user != null && userId != null) {
+                            // 1. Cek Data Role User di Firestore
+                            db.collection("users").document(userId).get()
+                                .addOnSuccessListener { document ->
+                                    val role = document.getString("role") ?: "client"
 
-                            // JIKA CLIENT: Reload status user dari Firebase
-                            user.reload().addOnCompleteListener { reloadTask ->
-                                if (reloadTask.isSuccessful) {
-                                    // Cek apakah email sudah diverifikasi
-                                    if (user.isEmailVerified) {
-                                        Toast.makeText(this, "Login Berhasil", Toast.LENGTH_SHORT).show()
-                                        startActivity(Intent(this, ClientDashboardActivity::class.java))
+                                    // Jika Role Admin: Langsung masuk ke Admin Dashboard
+                                    if (role.equals("admin", ignoreCase = true)) {
+                                        Toast.makeText(this, "Login Admin Berhasil", Toast.LENGTH_SHORT).show()
+                                        startActivity(Intent(this, AdminDashboardActivity::class.java))
                                         finish()
                                     } else {
-                                        // Jika belum klik link di email
-                                        Toast.makeText(
-                                            this,
-                                            "Email Anda belum diverifikasi! Silakan cek Inbox atau folder Spam di email Anda.",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        auth.signOut() // Paksa logout
+                                        // Jika Role Client: Wajib cek verifikasi email
+                                        user.reload().addOnCompleteListener { reloadTask ->
+                                            if (reloadTask.isSuccessful) {
+                                                if (user.isEmailVerified) {
+                                                    Toast.makeText(this, "Login Berhasil", Toast.LENGTH_SHORT).show()
+                                                    startActivity(Intent(this, ClientDashboardActivity::class.java))
+                                                    finish()
+                                                } else {
+                                                    Toast.makeText(
+                                                        this,
+                                                        "Email Anda belum diverifikasi! Silakan cek Inbox atau folder Spam.",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+                                                    auth.signOut()
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-                            }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(this, "Gagal mengambil data user: ${e.message}", Toast.LENGTH_SHORT).show()
+                                }
                         }
                     } else {
                         Toast.makeText(
@@ -93,6 +100,7 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
     }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)

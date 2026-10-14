@@ -21,20 +21,16 @@ class AdminDashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_dashboard)
 
-        // --- TAMBAHKAN 2 BARIS INI KARENA SEBELUMNYA BELUM ADA ---
         val toolbar = findViewById<Toolbar>(R.id.toolbarAdmin)
         setSupportActionBar(toolbar)
-        // ---------------------------------------------------------
 
         auth = FirebaseAuth.getInstance()
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        // Buka fragment Overview pertama kali saat aplikasi berjalan
         if (savedInstanceState == null) {
             loadFragment(AdminOverviewFragment())
         }
 
-        // Logika perpindahan antar halaman Bottom Navigation
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_overview -> loadFragment(AdminOverviewFragment())
@@ -61,10 +57,8 @@ class AdminDashboardActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_logout -> {
-                // Logout dari Firebase Auth
                 FirebaseAuth.getInstance().signOut()
 
-                // Kembali ke halaman Login
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
